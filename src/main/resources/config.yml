@@ -1,0 +1,55 @@
+attributes:
+  GENERIC_MAX_HEALTH:
+    display: "MAX_HEALTH"
+    maxPercent: 15
+  GENERIC_FOLLOW_RANGE:
+    display: "FOLLOW_RANGE"
+    maxPercent: 15
+  GENERIC_KNOCKBACK_RESISTANCE:
+    display: "KNOCKBACK_RESISTANCE"
+    maxPercent: 15
+  GENERIC_MOVEMENT_SPEED:
+    display: "MOVEMENT_SPEED"
+    maxPercent: 15
+  GENERIC_ATTACK_DAMAGE:
+    display: "ATTACK_DAMAGE"
+    maxPercent: 15
+  GENERIC_ATTACK_SPEED:
+    display: "ATTACK_SPEED"
+    maxPercent: 15
+  GENERIC_ARMOR:
+    display: "ARMOR"
+    maxPercent: 15
+  GENERIC_ARMOR_TOUGHNESS:
+    display: "ARMOR"
+    maxPercent: 15
+  GENERIC_LUCK:
+    display: "LUCK"
+    maxPercent: 15
+
+drops:
+  n:
+    enchants: 0
+    attributes: 1
+    list:
+      - ZOMBIE
+      - SPIDER
+  r:
+    enchants: 0
+    attributes: 2
+    list:
+      - SKELETON
+  sr:
+    enchants: 1
+    attributes: 2
+    list:
+      - CREEPER
+      - ENDERMAN
+  ssr:
+    enchants: 2
+    attributes: 2
+
+random:
+  start: 0.2
+  step: 0.05
+  maxDrops: 3

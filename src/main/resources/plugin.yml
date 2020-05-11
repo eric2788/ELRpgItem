@@ -1,0 +1,9 @@
+name: ELRPGItem
+version: ${project.version}
+main: com.ericlam.mc.elrpgitem.ELRpgItem
+api-version: "1.15"
+depend: [KotLib, XuanCatAPI]
+commands:
+  generate-item:
+    description: generate random item
+    permission: elrpg.item
