@@ -10,7 +10,8 @@ data class ELConfig(
         val attributes: Map<Attribute, AttributeMeta>,
         val drops: Quality,
         val random: RPGRandom,
-        val named_boss_list: List<String>
+        val named_boss_list: List<String>,
+        val disabled_world: List<String>
 ) : ConfigFile(){
 
     data class Quality(

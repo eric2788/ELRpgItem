@@ -57,6 +57,9 @@ random:
     named: 0.01
     equipped: 0.08
 
+disabled_world:
+  - disabled_world
+
 named_boss_list:
   - A
   - B

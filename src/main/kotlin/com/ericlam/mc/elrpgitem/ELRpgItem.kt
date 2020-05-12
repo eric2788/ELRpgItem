@@ -24,6 +24,7 @@ class ELRpgItem : BukkitPlugin() {
         elConfig = manager.getConfig(ELConfig::class)
 
         listen<EntityDeathEvent> {
+            if (it.entity.world.name in elConfig.disabled_world) return@listen
             val nbt = NBT.getEntityNBT(it.entity)
             if (nbt.getBoolean("rpg.monster") && !it.entity.isCustomNameVisible) return@listen
             val drops = (0..elConfig.random.maxDrops).rpgRandom()
@@ -43,6 +44,7 @@ class ELRpgItem : BukkitPlugin() {
         }
 
         listen<EnchantItemEvent> {
+            if (it.enchanter.world.name in elConfig.disabled_world) return@listen
             val nbt = NBT.getItemNBT(it.item)
             if (nbt.getBoolean("rpg.item")) {
                 it.isCancelled = true
@@ -51,6 +53,7 @@ class ELRpgItem : BukkitPlugin() {
         }
 
         listen<EntitySpawnEvent> {
+            if (it.entity.world.name in elConfig.disabled_world) return@listen
             if (it.entity !is Monster) return@listen
             val random = Random.nextDouble()
             if (random > elConfig.random.mob_spawn.equipped) return@listen
@@ -107,7 +110,7 @@ class ELRpgItem : BukkitPlugin() {
                 else -> return@listen
             } ?: return@listen
 
-            debug("${damagerEntity.name} -> ${it.entity.name}: ${it.finalDamage} HP")
+            debug("${damagerEntity.name} -> ${it.entity.name}: -${it.finalDamage} HP || ${it.entity.name} HP is now ${(it.entity as? LivingEntity)?.health ?: "NULL"}")
         }
 
         command("generate-item", "elrpg.item") { sender, strings ->
