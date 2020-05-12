@@ -53,3 +53,24 @@ random:
   start: 0.2
   step: 0.05
   maxDrops: 3
+  mob_spawn:
+    named: 0.01
+    equipped: 0.08
+
+named_boss_list:
+  - A
+  - B
+  - C
+  - D
+  - E
+  - F
+  - G
+  - H
+  - I
+  - J
+  - K
+  - L
+  - M
+  - N
+  - O
+  - P

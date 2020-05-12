@@ -51,7 +51,7 @@ object ItemManager {
         val SUPERIOR_SUPER_RARE: List<Material> = SUPER_RARE + DIAMOND_ALL
 
         val BODY: List<EquipmentSlot> = listOf(EquipmentSlot.FEET, EquipmentSlot.LEGS, EquipmentSlot.CHEST, EquipmentSlot.HEAD)
-        val HAND: List<EquipmentSlot> = listOf(EquipmentSlot.HEAD, EquipmentSlot.OFF_HAND)
+        val HAND: List<EquipmentSlot> = listOf(EquipmentSlot.HAND, EquipmentSlot.OFF_HAND)
 
         var ALLOW_ATTRIBUTES: Map<Attribute, List<EquipmentSlot>> = mapOf(
                 Attribute.GENERIC_ARMOR to BODY,

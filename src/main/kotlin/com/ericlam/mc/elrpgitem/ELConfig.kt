@@ -9,7 +9,8 @@ import org.bukkit.entity.EntityType
 data class ELConfig(
         val attributes: Map<Attribute, AttributeMeta>,
         val drops: Quality,
-        val random: RPGRandom
+        val random: RPGRandom,
+        val named_boss_list: List<String>
 ) : ConfigFile(){
 
     data class Quality(
@@ -35,7 +36,13 @@ data class ELConfig(
     data class RPGRandom(
             val start: Double,
             val step: Double,
-            val maxDrops: Int
+            val maxDrops: Int,
+            val mob_spawn: MobSpawnSettings
+    )
+
+    data class MobSpawnSettings(
+            val named: Double,
+            val equipped: Double
     )
 
 }
