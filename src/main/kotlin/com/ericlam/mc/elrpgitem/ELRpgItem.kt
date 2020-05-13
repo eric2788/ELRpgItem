@@ -3,6 +3,7 @@ package com.ericlam.mc.elrpgitem
 import com.ericlam.mc.kotlib.KotLib
 import com.ericlam.mc.kotlib.bukkit.BukkitPlugin
 import com.ericlam.mc.kotlib.translateColorCode
+import net.milkbowl.vault.economy.Economy
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.*
 import org.bukkit.event.enchantment.EnchantItemEvent
@@ -13,16 +14,21 @@ import org.bukkit.inventory.EquipmentSlot
 import xuan.cat.XuanCatAPI.NBT
 import kotlin.random.Random
 
+
 class ELRpgItem : BukkitPlugin() {
 
     companion object {
         lateinit var elConfig: ELConfig
     }
 
+    private lateinit var eco: Economy
+
     override fun enable() {
         val manager = KotLib.getConfigFactory(this).register(ELConfig::class).dump()
         elConfig = manager.getConfig(ELConfig::class)
 
+        val rsp = server.servicesManager.getRegistration(Economy::class.java)
+        eco = rsp?.provider ?: throw IllegalStateException("Cannot find an economy plugin which support vault")
         listen<EntityDeathEvent> {
             if (it.entity.world.name in elConfig.disabled_world) return@listen
             val nbt = NBT.getEntityNBT(it.entity)
@@ -33,7 +39,15 @@ class ELRpgItem : BukkitPlugin() {
                     n.list.contains(it.entityType) -> ItemManager.Item.NORMAL to n.enchants to n.attributes
                     r.list.contains(it.entityType) -> ItemManager.Item.RARE to r.enchants to r.attributes
                     sr.list.contains(it.entityType) -> ItemManager.Item.SUPER_RARE to sr.enchants to sr.attributes
-                    it.entity.isCustomNameVisible -> ItemManager.Item.SUPERIOR_SUPER_RARE to ssr.enchants to ssr.attributes
+                    nbt.getBoolean("rpg.monster.named") -> {
+                        it.entity.killer?.let { p ->
+                            val money = elConfig.named_boss_settings.money
+                            eco.depositPlayer(p, money)
+                            p.sendMessage("§a擊殺具名怪物被獎勵金錢 $$money")
+                        }
+
+                        ItemManager.Item.SUPERIOR_SUPER_RARE to ssr.enchants to ssr.attributes
+                    }
                     else -> return@listen
                 }
                 for (i in 1..drops) {
@@ -59,7 +73,7 @@ class ELRpgItem : BukkitPlugin() {
             if (random > elConfig.random.mob_spawn.equipped) return@listen
             debug("Equipped Monster Spawned.")
             val eq = (it.entity as Monster).equipment ?: return@listen
-            with(elConfig.drops) {
+            with(elConfig.named_boss_settings) {
                 val named = random < elConfig.random.mob_spawn.named
                 val qualities = if (named) ItemManager.Item.SUPERIOR_SUPER_RARE else ItemManager.Item.SUPER_RARE
                 val nbt = NBT.getEntityNBT(it.entity)
@@ -69,12 +83,12 @@ class ELRpgItem : BukkitPlugin() {
                 if (named){
                     debug("This Equipped Monster is Named")
                     val mon = (it.entity as Monster)
-                    mon.getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue = (30..100).rpgRandom().toDouble()
-                    mon.getAttribute(Attribute.GENERIC_FOLLOW_RANGE)?.baseValue = (50..70).rpgRandom().toDouble()
-                    mon.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE)?.baseValue = Random.nextDouble()
-                    mon.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)?.baseValue = Random.nextDouble().coerceAtLeast(0.1).coerceAtMost(0.5)
-                    mon.getAttribute(Attribute.GENERIC_ARMOR)?.baseValue = (1..30).rpgRandom().toDouble()
-                    mon.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.baseValue = (3..10).rpgRandom().toDouble()
+                    mon.getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue = (health.min..health.max).rpgRandom().toDouble()
+                    mon.getAttribute(Attribute.GENERIC_FOLLOW_RANGE)?.baseValue = (follow_range.min..follow_range.max).rpgRandom().toDouble()
+                    mon.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE)?.baseValue = Random.nextDouble().coerceAtLeast(knockback_resistance.min).coerceAtMost(knockback_resistance.max)
+                    mon.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)?.baseValue = Random.nextDouble().coerceAtLeast(movement_speed.min).coerceAtMost(movement_speed.max)
+                    mon.getAttribute(Attribute.GENERIC_ARMOR)?.baseValue = (armor.min..armor.max).rpgRandom().toDouble()
+                    mon.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.baseValue = (atk_dmg.min..atk_dmg.max).rpgRandom().toDouble()
                     mon.isCustomNameVisible = true
                     mon.customName = elConfig.named_boss_list.random().translateColorCode()
 

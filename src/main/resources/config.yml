@@ -60,6 +60,29 @@ random:
 disabled_world:
   - disabled_world
 
+named_boss_settings:
+  money: 1000.0
+  health:
+    min: 30
+    max: 100
+  follow_range:
+    min: 50.0
+    max: 70.0
+  knockback_resistance:
+    min: 0.05
+    max: 1
+  movement_speed:
+    min: 0.1
+    max: 0.5
+  armor:
+    min: 1
+    max: 30
+  atk_dmg:
+    min: 3
+    max: 10
+
+
+
 named_boss_list:
   - A
   - B

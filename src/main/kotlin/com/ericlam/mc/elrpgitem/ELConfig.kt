@@ -11,7 +11,8 @@ data class ELConfig(
         val drops: Quality,
         val random: RPGRandom,
         val named_boss_list: List<String>,
-        val disabled_world: List<String>
+        val disabled_world: List<String>,
+        val named_boss_settings: BossSettings
 ) : ConfigFile(){
 
     data class Quality(
@@ -45,5 +46,20 @@ data class ELConfig(
             val named: Double,
             val equipped: Double
     )
+
+    data class BossSettings(
+            val money: Double,
+            val health: Range<Int>,
+            val follow_range: Range<Int>,
+            val knockback_resistance: Range<Double>,
+            val movement_speed: Range<Double>,
+            val armor: Range<Int>,
+            val atk_dmg: Range<Int>
+    ){
+        data class Range<N : Number>(
+                val min: N,
+                val max: N
+        )
+    }
 
 }
