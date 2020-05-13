@@ -110,7 +110,7 @@ class ELRpgItem : BukkitPlugin() {
                 eq.helmetDropChance = Random.nextFloat()
                 eq.leggings = ItemManager.generateWeapon((0..2).random(), (0..2).random(), qualities.filter { m -> m.equipmentSlot == EquipmentSlot.LEGS })
                 eq.leggingsDropChance = Random.nextFloat()
-                eq.setItemInMainHand(ItemManager.generateWeapon((0..2).random(), (0..2).random(), qualities.filter { m -> m.equipmentSlot == EquipmentSlot.HAND }))
+                eq.setItemInMainHand(ItemManager.generateWeapon((0..2).random(), (0..2).random(), qualities.filter { m -> m.equipmentSlot == EquipmentSlot.HAND && m in ItemManager.Item.WEAPONS }))
                 eq.itemInMainHandDropChance = Random.nextFloat()
 
             }
