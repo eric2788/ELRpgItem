@@ -8,6 +8,7 @@ import net.milkbowl.vault.economy.Economy
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.*
 import org.bukkit.event.enchantment.EnchantItemEvent
+import org.bukkit.event.entity.CreatureSpawnEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.event.entity.EntitySpawnEvent
@@ -67,7 +68,7 @@ class ELRpgItem : BukkitPlugin() {
             }
         }
 
-        listen<EntitySpawnEvent> {
+        listen<CreatureSpawnEvent> {
             if (it.entity.world.name in elConfig.disabled_world) return@listen
             if (it.entity !is Monster) return@listen
             val random = Random.nextDouble()

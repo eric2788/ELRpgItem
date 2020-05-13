@@ -75,9 +75,9 @@ object ItemManager {
         val m = ms.random()
         return BukkitPlugin.plugin.itemStack(
                 material = m,
-                amount = 1,
-                enchant = m.randomEnchantments(enchants)
+                amount = 1
         ).apply {
+            this.randomEnchantments(enchants)
             val meta = this.itemMeta
             m.randomAttributes(attributes).forEach { (attr, attrMeta) ->
                 val percent = (1..attrMeta.maxPercent).rpgRandom().toDouble() / 100
