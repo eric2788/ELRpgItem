@@ -31,7 +31,7 @@ fun Material.randomAttributes(amount: Int): Map<Attribute, ELConfig.AttributeMet
 
 tailrec fun IntRange.rpgRandom(start: Double = ELRpgItem.elConfig.random.start): Int{
     var s = start
-    val step = 1 / this.last
+    val step = (1 - start) / this.last
     for (i in this) {
         if (Random.nextDouble() < start) return i
         s += step
