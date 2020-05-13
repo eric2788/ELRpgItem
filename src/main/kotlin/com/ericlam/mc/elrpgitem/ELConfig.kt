@@ -37,7 +37,6 @@ data class ELConfig(
 
     data class RPGRandom(
             val start: Double,
-            val step: Double,
             val maxDrops: Int,
             val mob_spawn: MobSpawnSettings
     )
