@@ -2,6 +2,7 @@ package com.ericlam.mc.elrpgitem
 
 import com.ericlam.mc.kotlib.KotLib
 import com.ericlam.mc.kotlib.bukkit.BukkitPlugin
+import com.ericlam.mc.kotlib.command.BukkitCommand
 import com.ericlam.mc.kotlib.translateColorCode
 import net.milkbowl.vault.economy.Economy
 import org.bukkit.attribute.Attribute
@@ -127,14 +128,33 @@ class ELRpgItem : BukkitPlugin() {
             debug("${damagerEntity.name} -> ${it.entity.name}: -${it.finalDamage} HP || ${it.entity.name} HP is now ${(it.entity as? LivingEntity)?.health ?: "NULL"}")
         }
 
-        command("generate-item", "elrpg.item") { sender, strings ->
-            val player = sender as? Player ?: let {
-                sender.sendMessage("you are not player")
-                return@command
-            }
-            player.sendMessage("§a隨機物品已生成")
-            player.inventory.addItem(ItemManager.generateWeapon(2, 2))
-        }
+        val cmd  = object : BukkitCommand(
+                name = "elrpg",
+                description = "elrpg 指令",
+                permission = "elrpg.admin",
+                child = arrayOf(
+                        BukkitCommand(
+                                name = "generate",
+                                description = "生成隨機物品"
+                        ){ sender, args ->
+                            val player = sender as? Player ?: let {
+                                sender.sendMessage("you are not player")
+                                return@BukkitCommand
+                            }
+                            player.sendMessage("§a隨機物品已生成")
+                            player.inventory.addItem(ItemManager.generateWeapon(2, 2))
+                        },
+                        BukkitCommand(
+                                name = "reload",
+                                description = "重載指令"
+                        ){ sender , _ ->
+                            elConfig.reload()
+                            sender.sendMessage("§a重載成功")
+                        }
+                )
+        ){}
+
+        registerCmd(cmd)
 
         info("ELRpgItem enabled, fuck you")
     }

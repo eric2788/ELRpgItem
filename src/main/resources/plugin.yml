@@ -4,6 +4,6 @@ main: com.ericlam.mc.elrpgitem.ELRpgItem
 api-version: "1.15"
 depend: [KotLib, XuanCatAPI, Vault]
 commands:
-  generate-item:
-    description: generate random item
-    permission: elrpg.item
+  elrpg:
+    description: elrpg command
+    permission: elrpg.admin
