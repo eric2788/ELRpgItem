@@ -49,7 +49,7 @@ data class ELConfig(
     data class BossSettings(
             val money: Double,
             val health: Range<Int>,
-            val follow_range: Range<Int>,
+            val spawn_reinforcement: Range<Double>,
             val knockback_resistance: Range<Double>,
             val movement_speed: Range<Double>,
             val armor: Range<Int>,

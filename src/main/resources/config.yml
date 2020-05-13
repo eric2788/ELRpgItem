@@ -2,9 +2,6 @@ attributes:
   GENERIC_MAX_HEALTH:
     display: "MAX_HEALTH"
     maxPercent: 15
-  GENERIC_FOLLOW_RANGE:
-    display: "FOLLOW_RANGE"
-    maxPercent: 15
   GENERIC_KNOCKBACK_RESISTANCE:
     display: "KNOCKBACK_RESISTANCE"
     maxPercent: 15
@@ -64,9 +61,9 @@ named_boss_settings:
   health:
     min: 30
     max: 100
-  follow_range:
-    min: 50.0
-    max: 70.0
+  spawn_reinforcement:
+    min: 0.1
+    max: 0.3
   knockback_resistance:
     min: 0.05
     max: 1

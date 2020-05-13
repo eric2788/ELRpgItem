@@ -85,7 +85,7 @@ class ELRpgItem : BukkitPlugin() {
                     debug("This Equipped Monster is Named")
                     val mon = (it.entity as Monster)
                     mon.getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue = (health.min..health.max).rpgRandom().toDouble()
-                    mon.getAttribute(Attribute.GENERIC_FOLLOW_RANGE)?.baseValue = (follow_range.min..follow_range.max).rpgRandom().toDouble()
+                    mon.getAttribute(Attribute.ZOMBIE_SPAWN_REINFORCEMENTS)?.baseValue = Random.nextDouble().coerceAtLeast(spawn_reinforcement.min).coerceAtMost(spawn_reinforcement.max)
                     mon.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE)?.baseValue = Random.nextDouble().coerceAtLeast(knockback_resistance.min).coerceAtMost(knockback_resistance.max)
                     mon.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)?.baseValue = Random.nextDouble().coerceAtLeast(movement_speed.min).coerceAtMost(movement_speed.max)
                     mon.getAttribute(Attribute.GENERIC_ARMOR)?.baseValue = (armor.min..armor.max).rpgRandom().toDouble()
@@ -95,7 +95,7 @@ class ELRpgItem : BukkitPlugin() {
 
                     debug("Named Monster ${mon.customName}: ")
                     debug("MAX_HEALTH: ${mon.getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue}")
-                    debug("FOLLOW_RANGE: ${mon.getAttribute(Attribute.GENERIC_FOLLOW_RANGE)?.baseValue}")
+                    debug("ZOMBIE_SPAWN_REINFORCEMENTS: ${mon.getAttribute(Attribute.ZOMBIE_SPAWN_REINFORCEMENTS)?.baseValue}")
                     debug("KNOCKBACK_RESISTANCE: ${mon.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE)?.baseValue}")
                     debug("MOVEMENT_SPEED: ${mon.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)?.baseValue}")
                     debug("ARMOR: ${mon.getAttribute(Attribute.GENERIC_ARMOR)?.baseValue}")
