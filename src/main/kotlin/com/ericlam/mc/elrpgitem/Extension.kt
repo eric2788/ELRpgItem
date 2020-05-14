@@ -5,6 +5,8 @@ import org.bukkit.attribute.Attribute
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
+import java.lang.StringBuilder
+import java.util.*
 import kotlin.random.Random
 
 fun Enchantment.randomLevel(): Int {
@@ -38,6 +40,53 @@ tailrec fun IntRange.rpgRandom(start: Double = ELRpgItem.elConfig.random.start):
         s += step
     }
     return this.rpgRandom(s)
+}
+
+fun Attribute.toName(): String {
+    val s = this.toString().toLowerCase().split("_")
+    val name = StringBuilder()
+    var i = 0
+    for (word in s) {
+        when{
+            word == "generic" -> name.append("generic.")
+            i > 0 -> name.append(word.replaceFirst(word.first(), word.first().toUpperCase()))
+            else -> {
+                name.append(word)
+                i++
+            }
+        }
+    }
+    return name.toString()
+}
+
+fun Material.defaultAttributeUUID(attr: Attribute): UUID{
+    val uid =  when{
+        this in ItemManager.Item.WEAPONS -> {
+            when(attr) {
+                Attribute.GENERIC_ATTACK_DAMAGE -> "CB3F55D3-645C-4F38-A497-9C13A33DB5CF"
+                Attribute.GENERIC_ATTACK_SPEED -> "FA233E1C-4180-4865-B01B-BCCE9785ACA3"
+                else -> null
+            }
+        }
+        this in ItemManager.Item.TOOLS -> {
+            when(attr){
+                Attribute.GENERIC_ATTACK_DAMAGE -> "CB3F55D3-645C-4F38-A497-9C13A33DB5CF"
+                Attribute.GENERIC_ATTACK_SPEED -> "FA233E1C-4180-4865-B01B-BCCE9785ACA3"
+                else -> null
+            }
+        }
+        attr == Attribute.GENERIC_ARMOR || attr == Attribute.GENERIC_ARMOR_TOUGHNESS-> {
+            when(equipmentSlot){
+                EquipmentSlot.FEET -> "845DB27C-C624-495F-8C9F-6020A9A58B6B"
+                EquipmentSlot.LEGS -> "D8499B04-0E66-4726-AB29-64469D734E0D"
+                EquipmentSlot.CHEST -> "9F3D476D-C118-4544-8365-64846904B48E"
+                EquipmentSlot.HEAD -> "2AD3F246-FEE1-4E67-B886-69FD380BB150"
+                else -> null
+            }
+        }
+        else -> null
+    }
+    return uid?.let { UUID.fromString(it.toLowerCase()) } ?: UUID.randomUUID()
 }
 
 val Material.equipmentSlot: EquipmentSlot

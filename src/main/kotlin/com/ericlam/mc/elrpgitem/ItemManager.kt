@@ -80,8 +80,9 @@ object ItemManager {
             this.randomEnchantments(enchants)
             val meta = this.itemMeta
             m.randomAttributes(attributes).forEach { (attr, attrMeta) ->
-                val percent = (1..attrMeta.maxPercent).rpgRandom().toDouble() / 100
-                meta.addAttributeModifier(attr, AttributeModifier(UUID.randomUUID(), "elrpg.item.attr", percent, AttributeModifier.Operation.MULTIPLY_SCALAR_1, m.equipmentSlot))
+                val percent = (1..attrMeta.maxValue).rpgRandom().toDouble() / 100
+                BukkitPlugin.plugin.debug("Added attribute ${attr.toName()}")
+                meta.addAttributeModifier(attr, AttributeModifier(UUID.randomUUID(), attr.toName(), percent, ELRpgItem.elConfig.attribute_operation, m.equipmentSlot))
             }
             this.itemMeta = meta
             val nbt = NBT.getItemNBT(this)

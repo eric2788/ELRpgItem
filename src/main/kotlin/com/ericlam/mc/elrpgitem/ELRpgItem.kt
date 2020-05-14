@@ -5,15 +5,22 @@ import com.ericlam.mc.kotlib.bukkit.BukkitPlugin
 import com.ericlam.mc.kotlib.command.BukkitCommand
 import com.ericlam.mc.kotlib.translateColorCode
 import net.milkbowl.vault.economy.Economy
+import org.bukkit.Material
 import org.bukkit.attribute.Attribute
+import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.*
 import org.bukkit.event.enchantment.EnchantItemEvent
 import org.bukkit.event.entity.CreatureSpawnEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.event.entity.EntitySpawnEvent
+import org.bukkit.event.player.PlayerChangedMainHandEvent
+import org.bukkit.event.player.PlayerSwapHandItemsEvent
 import org.bukkit.inventory.EquipmentSlot
 import xuan.cat.XuanCatAPI.NBT
+import xuan.cat.XuanCatAPI.api.event.packet.ClientHeldItemSlotPacketEvent
+import java.awt.event.ItemEvent
+import java.util.*
 import kotlin.random.Random
 
 
@@ -85,7 +92,9 @@ class ELRpgItem : BukkitPlugin() {
                 if (named){
                     debug("This Equipped Monster is Named")
                     val mon = (it.entity as Monster)
-                    mon.getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue = (health.min..health.max).rpgRandom().toDouble()
+                    val health = (health.min..health.max).rpgRandom().toDouble()
+                    mon.getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue = health
+                    it.entity.health = health
                     mon.getAttribute(Attribute.ZOMBIE_SPAWN_REINFORCEMENTS)?.baseValue = Random.nextDouble().coerceAtLeast(spawn_reinforcement.min).coerceAtMost(spawn_reinforcement.max)
                     mon.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE)?.baseValue = Random.nextDouble().coerceAtLeast(knockback_resistance.min).coerceAtMost(knockback_resistance.max)
                     mon.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)?.baseValue = Random.nextDouble().coerceAtLeast(movement_speed.min).coerceAtMost(movement_speed.max)
@@ -137,7 +146,7 @@ class ELRpgItem : BukkitPlugin() {
                         BukkitCommand(
                                 name = "generate",
                                 description = "生成隨機物品"
-                        ){ sender, args ->
+                        ){ sender, _ ->
                             val player = sender as? Player ?: let {
                                 sender.sendMessage("you are not player")
                                 return@BukkitCommand

@@ -1,28 +1,30 @@
 attributes:
   GENERIC_MAX_HEALTH:
     display: "MAX_HEALTH"
-    maxPercent: 15
+    maxValue: 15
   GENERIC_KNOCKBACK_RESISTANCE:
     display: "KNOCKBACK_RESISTANCE"
-    maxPercent: 15
+    maxValue: 15
   GENERIC_MOVEMENT_SPEED:
     display: "MOVEMENT_SPEED"
-    maxPercent: 15
+    maxValue: 15
   GENERIC_ATTACK_DAMAGE:
     display: "ATTACK_DAMAGE"
-    maxPercent: 15
+    maxValue: 15
   GENERIC_ATTACK_SPEED:
     display: "ATTACK_SPEED"
-    maxPercent: 15
+    maxValue: 15
   GENERIC_ARMOR:
     display: "ARMOR"
-    maxPercent: 15
+    maxValue: 15
   GENERIC_ARMOR_TOUGHNESS:
     display: "ARMOR"
-    maxPercent: 15
+    maxValue: 15
   GENERIC_LUCK:
     display: "LUCK"
-    maxPercent: 15
+    maxValue: 15
+
+attribute_operation: MULTIPLY_SCALAR_1
 
 drops:
   n:

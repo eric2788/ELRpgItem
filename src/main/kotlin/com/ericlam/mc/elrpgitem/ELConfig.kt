@@ -3,11 +3,13 @@ package com.ericlam.mc.elrpgitem
 import com.ericlam.mc.kotlib.config.Resource
 import com.ericlam.mc.kotlib.config.dto.ConfigFile
 import org.bukkit.attribute.Attribute
+import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.EntityType
 
 @Resource(locate = "config.yml")
 data class ELConfig(
         val attributes: Map<Attribute, AttributeMeta>,
+        val attribute_operation: AttributeModifier.Operation,
         val drops: Quality,
         val random: RPGRandom,
         val named_boss_list: List<String>,
@@ -32,7 +34,7 @@ data class ELConfig(
 
     data class AttributeMeta(
             val display: String,
-            val maxPercent: Int
+            val maxValue: Int
     )
 
     data class RPGRandom(
