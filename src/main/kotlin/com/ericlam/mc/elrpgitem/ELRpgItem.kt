@@ -4,12 +4,16 @@ import com.ericlam.mc.kotlib.KotLib
 import com.ericlam.mc.kotlib.bukkit.BukkitPlugin
 import com.ericlam.mc.kotlib.command.BukkitCommand
 import net.Indyuce.mmoitems.MMOItems
+import net.Indyuce.mmoitems.api.droptable.DropTable
+import net.Indyuce.mmoitems.manager.DropTableManager
 import net.milkbowl.vault.economy.Economy
 import org.bukkit.entity.*
+import org.bukkit.event.HandlerList
 import org.bukkit.event.enchantment.EnchantItemEvent
 import org.bukkit.event.entity.CreatureSpawnEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDeathEvent
+import org.bukkit.inventory.ItemStack
 import xuan.cat.XuanCatAPI.NBT
 import kotlin.random.Random
 
@@ -26,12 +30,16 @@ class ELRpgItem : BukkitPlugin() {
         val manager = KotLib.getConfigFactory(this).register(ELConfig::class).dump()
         elConfig = manager.getConfig(ELConfig::class)
         val mmoEnabled = server.pluginManager.getPlugin("MMOItems") != null
+        debug("MMOItems hooking is now $mmoEnabled")
+        if (mmoEnabled){
+            info("MMOItems hooked, unregistered mmo mob drop listener and using elrpg own drop listener.")
+            HandlerList.unregisterAll(MMOItems.plugin.dropTables)
+        }
         val rsp = server.servicesManager.getRegistration(Economy::class.java)
         eco = rsp?.provider ?: throw IllegalStateException("Cannot find an economy plugin which support vault")
         listen<EntityDeathEvent> {
             if (it.entity.world.name in elConfig.disabled_world) return@listen
             val nbt = NBT.getEntityNBT(it.entity)
-            if (nbt.getBoolean("rpg.monster") && !it.entity.isCustomNameVisible) return@listen
             val drops = (0..elConfig.random.maxDrops).rpgRandom()
             with(elConfig.drops) {
                 val meta = when {
@@ -39,12 +47,21 @@ class ELRpgItem : BukkitPlugin() {
                     r.list.contains(it.entityType) -> ELRPGManager.Item.RARE to r.enchants to r.attributes
                     sr.list.contains(it.entityType) -> ELRPGManager.Item.SUPER_RARE to sr.enchants to sr.attributes
                     nbt.getBoolean("rpg.monster.named") -> {
-                        it.entity.killer?.let { p ->
+                        val damager = (it.entity.lastDamageCause as? EntityDamageByEntityEvent)?.damager
+                        when(damager){
+                            is Projectile -> damager.shooter as Player
+                            is TNTPrimed -> damager.source as Player
+                            is Player -> damager
+                            else -> null
+                        }?.let { p ->
                             val money = elConfig.named_boss_settings.money
                             eco.depositPlayer(p, money)
                             p.sendMessage("§a擊殺具名怪物被獎勵金錢 $$money")
                         }
-                        if (mmoEnabled) MMOItems.plugin.dropTables.a(it)
+                        if (mmoEnabled) {
+                            debug("named mob killed, drop MMOItems")
+                            MMOItems.plugin.dropTables.a(it)
+                        }
                         ELRPGManager.Item.SUPERIOR_SUPER_RARE to ssr.enchants to ssr.attributes
                     }
                     else -> return@listen
