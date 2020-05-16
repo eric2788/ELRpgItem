@@ -76,7 +76,7 @@ fun Monster.toEquipped(named: Boolean): Boolean {
         val nbt = NBT.getEntityNBT(this@toEquipped)
         nbt.setBoolean("rpg.monster", true)
         nbt.setBoolean("rpg.monster.named", named)
-        NBT.setEntityNBT(this@toEquipped, nbt)
+        NBT.setEntityPermanentNBT(this@toEquipped, nbt)
         if (named) {
             BukkitPlugin.plugin.debug("This Equipped Monster is Named")
             val health = (health.min..health.max).rpgRandom().toDouble()

@@ -41,12 +41,16 @@ class ELRpgItem : BukkitPlugin() {
             if (it.entity.world.name in elConfig.disabled_world) return@listen
             val nbt = NBT.getEntityNBT(it.entity)
             val drops = (0..elConfig.random.maxDrops).rpgRandom()
+            debug("entites nbt: ${nbt.asString()}")
+            debug("has equipped key: ${nbt.hasKey("rpg.monster")}")
+            debug("has named key: ${nbt.hasKey("rpg.monster.named")}")
             with(elConfig.drops) {
                 val meta = when {
                     n.list.contains(it.entityType) -> ELRPGManager.Item.NORMAL to n.enchants to n.attributes
                     r.list.contains(it.entityType) -> ELRPGManager.Item.RARE to r.enchants to r.attributes
                     sr.list.contains(it.entityType) -> ELRPGManager.Item.SUPER_RARE to sr.enchants to sr.attributes
                     nbt.getBoolean("rpg.monster.named") -> {
+                        debug("named monster got killed: ${it.entity.customName}")
                         val damager = (it.entity.lastDamageCause as? EntityDamageByEntityEvent)?.damager
                         when(damager){
                             is Projectile -> damager.shooter as Player
