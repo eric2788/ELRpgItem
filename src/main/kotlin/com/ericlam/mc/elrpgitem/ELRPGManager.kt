@@ -1,6 +1,11 @@
 package com.ericlam.mc.elrpgitem
 
 import com.ericlam.mc.kotlib.bukkit.BukkitPlugin
+import net.Indyuce.mmoitems.MMOItems
+import net.Indyuce.mmoitems.api.Type
+import net.Indyuce.mmoitems.api.droptable.item.MMOItemDropItem
+import net.Indyuce.mmoitems.api.item.MMOItem
+import net.Indyuce.mmoitems.api.item.build.MMOItemBuilder
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
@@ -9,7 +14,7 @@ import org.bukkit.inventory.ItemStack
 import xuan.cat.XuanCatAPI.NBT
 import java.util.*
 
-object ItemManager {
+object ELRPGManager {
 
     object Item {
 
@@ -70,7 +75,7 @@ object ItemManager {
     }
 
 
-    fun generateWeapon(attributes: Int, enchants: Int, vararg materials: List<Material>): ItemStack {
+    fun generateItem(attributes: Int, enchants: Int, vararg materials: List<Material>): ItemStack {
         val ms = materials.takeIf { it.isNotEmpty() }?.toList()?.flatten() ?: Item.ALL
         val m = ms.random()
         return BukkitPlugin.plugin.itemStack(

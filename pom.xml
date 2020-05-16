@@ -6,7 +6,7 @@
 
     <groupId>com.ericlam.mc</groupId>
     <artifactId>ELRpgItem</artifactId>
-    <version>0.1.7</version>
+    <version>0.1.8</version>
 
     <repositories>
         <repository>
@@ -23,6 +23,10 @@
         </repository>
     </repositories>
 
+    <properties>
+        <mmo.item>P:/Java/Libraries/plugins/MMOItems-5.4.2.jar</mmo.item>
+        <mmo.lib>P:/Java/Libraries/plugins/MMOLib-1.1.1.jar</mmo.lib>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -46,6 +50,20 @@
             <groupId>xuan.cat</groupId>
             <artifactId>XuanCatAPI</artifactId>
             <version>3.0.10</version>
+        </dependency>
+        <dependency>
+            <groupId>mmo</groupId>
+            <artifactId>items</artifactId>
+            <version>0.0.1</version>
+            <scope>system</scope>
+            <systemPath>${mmo.item}</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>mmo</groupId>
+            <artifactId>lib</artifactId>
+            <version>0.0.1</version>
+            <scope>system</scope>
+            <systemPath>${mmo.lib}</systemPath>
         </dependency>
     </dependencies>
 

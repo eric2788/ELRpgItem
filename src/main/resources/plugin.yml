@@ -3,6 +3,7 @@ version: ${project.version}
 main: com.ericlam.mc.elrpgitem.ELRpgItem
 api-version: "1.15"
 depend: [KotLib, XuanCatAPI, Vault]
+softdepend: [MMOItems]
 commands:
   elrpg:
     description: elrpg command
