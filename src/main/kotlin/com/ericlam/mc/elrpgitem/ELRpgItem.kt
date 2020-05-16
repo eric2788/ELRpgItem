@@ -39,7 +39,7 @@ class ELRpgItem : BukkitPlugin() {
         eco = rsp?.provider ?: throw IllegalStateException("Cannot find an economy plugin which support vault")
         listen<EntityDeathEvent> {
             if (it.entity.world.name in elConfig.disabled_world) return@listen
-            val nbt = NBT.getEntityNBT(it.entity)
+            val nbt = NBT.getEntityPermanentNBT(it.entity)
             val drops = (0..elConfig.random.maxDrops).rpgRandom()
             debug("entites nbt: ${nbt.asString()}")
             debug("has equipped key: ${nbt.hasKey("rpg.monster")}")
