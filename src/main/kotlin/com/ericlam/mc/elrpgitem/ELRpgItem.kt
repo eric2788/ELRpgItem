@@ -42,13 +42,11 @@ class ELRpgItem : BukkitPlugin() {
             val nbt = NBT.getEntityPermanentNBT(it.entity)
             val drops = (0..elConfig.random.maxDrops).rpgRandom()
             debug("entites nbt: ${nbt.asString()}")
-            debug("has equipped key: ${nbt.hasKey("rpg.monster")}")
-            debug("has named key: ${nbt.hasKey("rpg.monster.named")}")
+            debug("has equipped key: ${nbt.hasKey("rpg.monster")}, value ${nbt.getBoolean("rpg.monster")}")
+            debug("has named key: ${nbt.hasKey("rpg.monster.named")}, value ${nbt.getBoolean("rpg.monster.named")}")
+            debug("mmoitem enabled: $mmoEnabled")
             with(elConfig.drops) {
                 val meta = when {
-                    n.list.contains(it.entityType) -> ELRPGManager.Item.NORMAL to n.enchants to n.attributes
-                    r.list.contains(it.entityType) -> ELRPGManager.Item.RARE to r.enchants to r.attributes
-                    sr.list.contains(it.entityType) -> ELRPGManager.Item.SUPER_RARE to sr.enchants to sr.attributes
                     nbt.getBoolean("rpg.monster.named") -> {
                         debug("named monster got killed: ${it.entity.customName}")
                         val damager = (it.entity.lastDamageCause as? EntityDamageByEntityEvent)?.damager
@@ -68,6 +66,9 @@ class ELRpgItem : BukkitPlugin() {
                         }
                         ELRPGManager.Item.SUPERIOR_SUPER_RARE to ssr.enchants to ssr.attributes
                     }
+                    n.list.contains(it.entityType) -> ELRPGManager.Item.NORMAL to n.enchants to n.attributes
+                    r.list.contains(it.entityType) -> ELRPGManager.Item.RARE to r.enchants to r.attributes
+                    sr.list.contains(it.entityType) -> ELRPGManager.Item.SUPER_RARE to sr.enchants to sr.attributes
                     else -> return@listen
                 }
                 for (i in 1..drops) {
