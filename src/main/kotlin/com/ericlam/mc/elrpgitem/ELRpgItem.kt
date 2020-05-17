@@ -129,6 +129,7 @@ class ELRpgItem : BukkitPlugin() {
                                 description = "重載指令"
                         ) { sender, _ ->
                             elConfig.reload()
+                            if (mmoEnabled) MMOItems.plugin.dropTables.reload()
                             sender.sendMessage("§a重載成功")
                         },
                         BukkitCommand(
