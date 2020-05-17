@@ -5,6 +5,7 @@ import com.ericlam.mc.kotlib.config.dto.ConfigFile
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.EntityType
+import org.bukkit.event.entity.CreatureSpawnEvent
 
 @Resource(locate = "config.yml")
 data class ELConfig(
@@ -50,6 +51,7 @@ data class ELConfig(
 
     data class BossSettings(
             val money: Double,
+            val disabled_reason: List<CreatureSpawnEvent.SpawnReason>,
             val health: Range<Int>,
             val spawn_reinforcement: Range<Double>,
             val knockback_resistance: Range<Double>,

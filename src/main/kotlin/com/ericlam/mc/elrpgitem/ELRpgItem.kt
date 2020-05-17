@@ -93,7 +93,7 @@ class ELRpgItem : BukkitPlugin() {
             val random = Random.nextDouble()
             if (random > elConfig.random.mob_spawn.equipped) return@listen
             debug("Equipped Monster Spawned.")
-            (it.entity as Monster).toEquipped(random < elConfig.random.mob_spawn.named)
+            (it.entity as Monster).toEquipped(random < elConfig.random.mob_spawn.named && it.spawnReason !in elConfig.named_boss_settings.disabled_reason)
         }
 
         listen<EntityDamageByEntityEvent> {

@@ -60,6 +60,8 @@ disabled_world:
 
 named_boss_settings:
   money: 1000.0
+  disabled_reason:
+    - SPAWNER
   health:
     min: 30
     max: 100
